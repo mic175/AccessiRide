@@ -35,7 +35,7 @@ Helping wheelchair users quickly find **nearby, truly** accessible transportatio
       <summary>Click to view video demonstrations</summary>
       
       ### 1. Fundamental Functions
-      [![Fundamental Functions Demo](URL_to_your_first_demo.gif)](https://youtu.be/YOUR_FIRST_VIDEO_ID)
+      [![Fundamental Functions Demo]https://www.youtube.com/watch?v=PtLKyoecgmk&t=197s](https://youtu.be/YOUR_FIRST_VIDEO_ID)
       
       ### 2. AI Assistant Interaction
       [![AI Assistant Demo](URL_to_your_second_demo.gif)](https://youtu.be/YOUR_SECOND_VIDEO_ID)
