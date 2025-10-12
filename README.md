@@ -28,14 +28,14 @@ Helping wheelchair users quickly find **nearby, truly** accessible transportatio
 
 ## Demo
 
-- **Live web demo:** https://boisterous-lolly-461c30.netlify.app/  
+- **Live web demo**: [https://boisterous-lolly-461c30.netlify.app/](https://boisterous-lolly-461c30.netlify.app/)  
 - **Videos:**
 - 
   <details>
       <summary>Click to view video demonstrations</summary>
       
       ### 1. Fundamental Functions
-      [![Fundamental Functions Demo]https://www.youtube.com/watch?v=PtLKyoecgmk&t=197s](https://youtu.be/YOUR_FIRST_VIDEO_ID)
+      [![Fundamental Functions Demo]https://www.youtube.com/watch?v=PtLKyoecgmk&t=197s](https://www.youtube.com/watch?v=PtLKyoecgmk&t=197s)
       
       ### 2. AI Assistant Interaction
       [![AI Assistant Demo](URL_to_your_second_demo.gif)](https://youtu.be/YOUR_SECOND_VIDEO_ID)
