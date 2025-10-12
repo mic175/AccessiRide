@@ -66,12 +66,10 @@ Finding accessible transportation often takes **hours** of searching, calls, and
 ---
 
 ## Architecture
-Client (Expo React Native) Backend (API)
-┌─────────────────────────┐ ┌──────────────────────────────┐
-│ AccessiRideApp │───POST──▶│ /email_cab (send request) │
-│ - Tabs & screens │◀──GET────│ /status (poll status) │
-│ - GPS, TTS, Voice │ │ + (planned) /providers/* │
-│ - Call providers │ └──────────────────────────────┘
-└─────────────────────────┘
-│
-└── (Web app / site for discovery & admin)
++---------------------------+ +-----------------------------+
+| AccessiRideApp | --POST--> | /email_cab (send request) |
+| Tabs, GPS, TTS, Voice | <--GET--- | /status (poll status) |
+| One-tap call to provider | | (planned) /providers/* |
++---------------------------+ +-----------------------------+
+|
+v
