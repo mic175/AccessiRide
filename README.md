@@ -30,11 +30,20 @@ Helping wheelchair users quickly find **nearby, truly** accessible transportatio
 
 - **Live web demo:** https://boisterous-lolly-461c30.netlify.app/  
 - **Videos:**
-  - Fundamental functions (demo 1)
-  - AI assistant interaction (demo 2)
-  - Mobile version walkthrough (demo 3)
+- 
+  <details>
+      <summary>Click to view video demonstrations</summary>
+      
+      ### 1. Fundamental Functions
+      [![Fundamental Functions Demo](URL_to_your_first_demo.gif)](https://youtu.be/YOUR_FIRST_VIDEO_ID)
+      
+      ### 2. AI Assistant Interaction
+      [![AI Assistant Demo](URL_to_your_second_demo.gif)](https://youtu.be/YOUR_SECOND_VIDEO_ID)
+      
+      ### 3. Mobile Version Walkthrough
+      [![Mobile Version Demo](URL_to_your_third_demo.gif)](https://youtu.be/YOUR_THIRD_VIDEO_ID)
 
-> Tip: add GIFs/screenshots here (home screen, provider list, “Call” action, status states).
+    </details>
 
 ---
 
