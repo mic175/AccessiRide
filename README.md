@@ -116,8 +116,7 @@ npx expo start
 
 **Environment**
 
-- GOOGLE_MAPS_API_KEY=xxxx
-- EMAIL_SERVICE_API_KEY=xxxx
+- GOOGLE_MAPS_API_KEY= AIzaSyBDSI8NHH8ANwyjTbgQTq2yKfW3fKmh4U4
 - BACKEND_URL=http://127.0.0.1:5000
 
 ---
