@@ -4,6 +4,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## Get started
 
+Before starting the app, follow the [Maps key setup in the project README](../README.md#1-mobile-app-expo) to configure address and route searches.
+
 1. Install dependencies
 
    ```bash

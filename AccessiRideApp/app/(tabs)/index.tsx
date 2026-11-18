@@ -15,7 +15,7 @@ import * as Location from 'expo-location';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyBDSI8NHH8ANwyjTbgQTq2yKfW3fKmh4U4';
+const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ?? '';
 
 // --- TYPE DEFINITIONS ---
 type PreferenceKeys = 'wheelchair' | 'audioNav' | 'lowSensory';
@@ -112,24 +112,24 @@ const LocalCabs = ({ styles, setAnnouncement }: { styles: any, setAnnouncement: 
     const [botStatus, setBotStatus] = useState<'idle' | 'loading' | 'complete'>('idle');
     const [botResults, setBotResults] = useState<Cab[]>([]);
     const handleBotRequest = () => {
-        setBotStatus('loading'); setAnnouncement("AccessiBot is contacting companies...");
+        setBotStatus('loading'); setAnnouncement("Preparing sample cab quotes.");
         setTimeout(() => {
             const results = ACCESSIBLE_CAB_COMPANIES.map(cab => ({ ...cab, price: `$${(Math.random() * 15 + 20).toFixed(2)}`, eta: `${Math.floor(Math.random() * 10) + 8} min`, }));
-            setBotResults(results); setBotStatus('complete'); setAnnouncement("AccessiBot has found your options.");
+            setBotResults(results); setBotStatus('complete'); setAnnouncement("Sample fares and pickup times are ready.");
         }, 2500);
     };
 
     return (
         <View style={styles.card}>
             <Text style={styles.sectionTitle}>Local Accessible Cabs</Text>
+            <Text style={[styles.bodyText, { textAlign: 'left', padding: 0, paddingBottom: 12 }]}>
+                Fares and pickup times are simulated. Use the phone button to contact a provider directly.
+            </Text>
             {botStatus === 'idle' && (
-                <>
-                    <Text style={[styles.bodyText, { textAlign: 'left', padding: 0, paddingBottom: 12 }]}>Let our bot call local companies to find the best price and availability for you.</Text>
-                    <TouchableOpacity style={styles.mainButton} onPress={handleBotRequest}>
-                        <Bot size={20} color="white" />
-                        <Text style={styles.buttonText}>Request Prices via Bot</Text>
-                    </TouchableOpacity>
-                </>
+                <TouchableOpacity style={styles.mainButton} onPress={handleBotRequest}>
+                    <Bot size={20} color="white" />
+                    <Text style={styles.buttonText}>Show Sample Quotes</Text>
+                </TouchableOpacity>
             )}
             {botStatus === 'loading' && <ActivityIndicator size="large" color={styles.title.color} />}
             {botStatus === 'complete' && (
@@ -321,7 +321,7 @@ export default function AccessiRideApp() {
     const handleInputChange = async (text: string, type: 'from' | 'to') => {
         if (type === 'from') { setFromText(text); setFrom(null); }
         else { setToText(text); setTo(null); }
-        if (text.length > 2) {
+        if (GOOGLE_MAPS_API_KEY && text.length > 2) {
             try {
                 const autocompleteUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(text)}&key=${GOOGLE_MAPS_API_KEY}&components=country:us&location=40.4406,-79.9959&radius=50000`;
                 const response = await fetch(autocompleteUrl);
@@ -446,6 +446,9 @@ export default function AccessiRideApp() {
                         <View style={[styles.section, { zIndex: 10 }]}>
                             <Text style={styles.sectionTitle}>Plan a New Trip</Text>
                             <View style={styles.card}>
+                                {!GOOGLE_MAPS_API_KEY && (
+                                    <Text style={styles.bodyText}>Address and route search require EXPO_PUBLIC_GOOGLE_MAPS_API_KEY in .env.local.</Text>
+                                )}
                                 <Text style={styles.label}>From</Text>
                                 <View style={styles.inputContainer}>
                                     <TextInput style={styles.textInput} placeholder="Start address" value={fromText} onChangeText={(text) => handleInputChange(text, 'from')} placeholderTextColor={styles.label.color} />
@@ -468,7 +471,7 @@ export default function AccessiRideApp() {
                                     </>
                                 )}
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity style={styles.mainButton} onPress={handleSearch} disabled={isLoading}>
+                                    <TouchableOpacity style={styles.mainButton} onPress={handleSearch} disabled={isLoading || !GOOGLE_MAPS_API_KEY}>
                                         <Text style={styles.buttonText}>{isLoading ? 'Searching...' : 'Find a Ride'}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.iconButton, styles.saveButton]} onPress={saveCurrentTrip}>

@@ -1,7 +1,6 @@
- # AccessiRide (DevDash) — Accessible Rides, Faster
+# AccessiRide (DevDash)
 
-**Challenge #9 (SmartTech Hackathon) • Winner — 1st Place 🏆**  
-Helping wheelchair users quickly find **nearby, truly** accessible transportation — without hours of research and phone calls.
+**First place, Challenge #9: Accessible Rides.** Our five-person team built AccessiRide at [Pitt’s 2025 Wireless Innovation Hackathon for Accessibility](https://www.smarttech.pitt.edu/news/2025hackathon). The mobile prototype helps wheelchair users plan a trip and call a Pittsburgh transportation provider. The team also demonstrated automated provider inquiries in a separate web prototype.
 
 > _“As a motorized wheelchair user, I imagine an app that uses my location to show companies with wheelchair vans, lifts, tie-downs, and seat belts — with hours, fees, and notice required.”_ — Mentor: **Monica Chupko**
 
@@ -9,7 +8,6 @@ Helping wheelchair users quickly find **nearby, truly** accessible transportatio
 - [Demo](#demo)
 - [Why this matters](#why-this-matters)
 - [Key features](#key-features)
-- [Mobile-first advantages](#mobile-first-advantages)
 - [Architecture](#architecture)
 - [Tech stack](#tech-stack)
 - [Getting started](#getting-started)
@@ -38,59 +36,41 @@ Helping wheelchair users quickly find **nearby, truly** accessible transportatio
 
 ## Why this matters
 
-Finding accessible transportation often takes **hours** of searching, calls, and dead ends. Information is **scattered and outdated**. AccessiRide centralizes providers and adds a simple, accessible workflow to **search → contact → confirm** — saving time and reducing stress.
+A route can tell a rider how to reach a destination. For someone traveling with a wheelchair, taking that trip can also depend on a provider having a suitable vehicle at the right time. Our mentor described having to look up equipment, hours and fees across multiple companies. We explored how much of that work an app could take off the rider’s hands.
 
 ---
 
 ## Key features
 
-- **Use my location** → instantly find providers near you  
-- **Filter by accessibility** (wheelchair vans, lifts, tie-downs, seat belts)  
-- **One-tap Call** or **Request via Email**  
-- **Clear status flow**: _Checking… → In progress → Confirmed/ETA_  
-- **Assistive tech–friendly UI**: large tap targets, high contrast, voice/TTS support  
-- **AI assistant** (prototype): guides the user and triggers requests
+- **Plan a trip.** Use the phone’s current location or select an address with Google Places. Choose transit, driving or cycling to see step-by-step directions. Transit searches use the selected departure time.
+- **Save a trip on the device.** Save origin and destination addresses, tap a saved trip to refill the form, or remove it. The app also remembers preferences for steps, curb cuts and rest stops. Route searches do not currently filter on those preferences.
+- **Hear confirmations.** The app announces a route search and speaks when the rider saves a trip or changes a travel preference.
+- **Contact a provider.** The phone button opens the system dialer for a listed company. Riders can call to confirm equipment, availability and fare.
 
----
+### What the demos show
 
-## Mobile-first advantages
-
-- **True portability**: always one tap away on the phone  
-- **Direct hardware integration**: high-accuracy GPS and one-tap calling  
-- **Focused, distraction-free UI**  
-- **Future-ready**: push notifications, offline saved trips, background updates
+| Feature | Data source and behavior |
+| --- | --- |
+| Mobile address lookup and directions | Google Places supplies address suggestions and coordinates. Google Directions supplies the steps, distance and duration. |
+| Mobile cab options | Four preset Pittsburgh providers. The app generates sample fares and pickup times locally. Selecting a sample simulates booking. |
+| Other fares on mobile | The transit fare is a fixed sample. Ride-share estimates use the route distance and a local formula. |
+| Web provider inquiries | The team tested phone and email inquiries in the separate web prototype. In an email test, the assistant asked for a missing fare and clarified a pickup time before recording the reply. |
 
 ---
 
 ## Architecture
 
-```bash
-Client (Expo React Native)         Backend (API)
-+--------------------------+       +---------------------------------+
-| AccessiRideApp           |       |                                 |
-| - Tabs & screens         |----POST--> /email_cab (send request)    |
-| - GPS, TTS, Voice        |<---GET---- /status (poll status)        |
-| - Call providers         |       |                                 |
-+--------------------------+       | + (planned) /providers/* |
-                                   +---------------------------------+
-```
+The [mobile screen](AccessiRideApp/app/%28tabs%29/index.tsx) calls Google Places and Directions. It uses the device for location, speech, saved addresses, preferences and dialing. The cab demo runs locally.
 
----
-
-**Repo layout (core)**
-
-- `AccessiRideApp/` — Expo React Native app (tabs, components, hooks)
-- `assets/` — icons, images, etc.
-- (Backend lives separately; sample endpoints documented below)
+The web prototype used a separate backend for provider inquiries. The `/email_cab` and `/status` examples below describe that workflow. This repository contains the Expo mobile app. The web client and Python server are hosted or maintained separately.
 
 ---
 
 ## Tech stack
 
-- **Mobile:** Expo (React Native), `expo-router`, React Navigation  
-- **Integrations:** `expo-location`, `react-native-maps`, `expo-speech`, `react-native-voice`, `@react-native-async-storage/async-storage`  
-- **Backend:** simple HTTP API for provider contact & status (email-based flow)  
-- **Data:** provider directory (CSV/Excel) + future sync/verification fields
+- **Mobile:** TypeScript, Expo React Native and Expo Router
+- **Location and routes:** Google Places, Google Directions, `expo-location` and `react-native-maps`
+- **Speech and storage:** `expo-speech` and AsyncStorage
 
 ---
 
@@ -98,32 +78,30 @@ Client (Expo React Native)         Backend (API)
 
 ### 1) Mobile app (Expo)
 
-**Prereqs**
-
-- Node 18+ and npm  
-- Expo CLI (`npm i -g expo`)  
-- iOS Simulator / Android Emulator set up (or Expo Go on your device)
-
-**Run**
+From a terminal with Node.js and npm installed:
 
 ```bash
-git clone <this-repo>
-cd AccessiRideApp
+git clone https://github.com/mic175/AccessiRide.git
+cd AccessiRide/AccessiRideApp
 npm install
-npx expo start
-# press i (iOS) or a (Android) or scan QR with Expo Go
+cp .env.example .env.local
 ```
 
-**Environment**
+On Windows PowerShell, use `Copy-Item .env.example .env.local`. Fill in the values for the environment you will run:
 
-- GOOGLE_MAPS_API_KEY= AIzaSyBDSI8NHH8ANwyjTbgQTq2yKfW3fKmh4U4
-- BACKEND_URL=http://127.0.0.1:5000
+| Variable | Use |
+| --- | --- |
+| `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` | Address autocomplete, place details and route requests. The prototype uses the Places API and Directions API legacy web-service endpoints. |
+| `GOOGLE_MAPS_IOS_API_KEY` | Google Maps SDK for iOS in custom native builds. Restrict the key to the iOS app’s bundle identifier and SDK. |
+| `GOOGLE_MAPS_ANDROID_API_KEY` | Google Maps SDK for Android in custom native builds. Restrict the key to the Android package, signing certificate and SDK. |
+
+Start the development server with `npx expo start`. Rebuild a custom native app after changing its SDK key. The local environment file is ignored by Git. Expo embeds public variables in the client bundle. Limit the web-service key to the required APIs and use a backend proxy for production web-service calls. See [Google Maps Platform’s guidance](https://developers.google.com/maps/api-security-best-practices) and [Expo’s environment variable documentation](https://docs.expo.dev/guides/environment-variables/).
 
 ---
 
 ### 2) Backend API
 
-Minimal prototype used during the hackathon. Run your local server at `http://127.0.0.1:5000`.
+These examples assume you have the separate hackathon backend running at `http://127.0.0.1:5000`. The mobile app can run independently.
 
 #### Send request to a provider
 
@@ -138,12 +116,13 @@ curl --location 'http://127.0.0.1:5000/email_cab' \
 }'
 ```
 
-#### Check request statusCheck request status
+#### Check request status
 - curl 'http://127.0.0.1:5000/status?EmailFrom=provider@example.com'
 
-#### Frontend fetch examples (JS)
+#### Web frontend fetch examples (JS)
 
-```bash
+```js
+const BACKEND_URL = 'http://127.0.0.1:5000';
 // Send
 await fetch(`${BACKEND_URL}/email_cab`, {
   method: 'POST',
@@ -177,8 +156,8 @@ https://boisterous-lolly-461c30.netlify.app/
 ## API Reference
 | Endpoint | Method | Body | Description |
 | :--- | :--- | :--- | :--- |
-| `/email_cab` | `POST` | `{ to, source, destination, cab_company }` | Sends an email to the provider to initiate a ride request. |
-| `/status?emailFrom=<email>` | `GET` | — | Returns the latest status for the request thread. |
+| `/email_cab` | `POST` | `{ to, source, destination, cab_company }` | Asks a provider about a trip’s availability, pickup time and fare. |
+| `/status?EmailFrom=<email>` | `GET` | — | Returns the latest status for the request thread. |
 
 ### Planned
 
@@ -199,26 +178,16 @@ https://boisterous-lolly-461c30.netlify.app/
 
 ## Accessibility
 
-We designed for access-first:
-
-- High-contrast themes & reduced motion support
-- Large tap targets and consistent layouts
-- Voice input for addresses; Text-to-Speech confirmations
-- “One-tap Call” for minimal effort actions
-- Clear progress states with haptic/aural feedback
-
-Please open issues for additional accessibility improvements — we prioritize them.
+The mobile app offers light and dark themes, spoken confirmations and direct dialing. Riders can record needs such as curb cuts in their profile. A provider can confirm whether its vehicle will accommodate a particular wheelchair.
 
 ---
 
 ## Roadmap
 
-- Provider directory service with verification workflow
-- In-app saved places and recent requests
-- Push notifications: “Your accessible cab is 5 minutes away”
-- Offline access for saved providers and past trips
-- Multi-city coverage & community-verified updates
-- Privacy & security review (PII minimization, audit logs)
+- Connect the mobile cab screen to provider replies for actual quotes and pickup times.
+- Verify provider equipment and service areas, then use those records to filter results.
+- Keep a history of provider inquiries and notify the rider when a reply arrives.
+- Expand coverage beyond Pittsburgh and support community-verified updates.
 
 ---
 

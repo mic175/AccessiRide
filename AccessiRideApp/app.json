@@ -15,24 +15,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.AccessiRideApp",
-      "config": {
-        "googleMapsApiKey": "AIzaSyBDSI8NHH8ANwyjTbgQTq2yKfW3fKmh4U4"
-      },
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allow AccessiRide to access your location to find your starting point."
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/android-icon-foreground.png", 
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.AccessiRideApp",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBDSI8NHH8ANwyjTbgQTq2yKfW3fKmh4U4"
-        }
-      },
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION"
       ]
